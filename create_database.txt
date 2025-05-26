@@ -1,0 +1,69 @@
+USE master;
+GO
+
+-- Create the database
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'ITSupportDB')
+    CREATE DATABASE ITSupportDB;
+GO
+
+USE ITSupportDB;
+GO
+
+-- Campuses table
+CREATE TABLE Campuses (
+    CampusID INT PRIMARY KEY IDENTITY(1,1),
+    CampusName NVARCHAR(100) NOT NULL
+);
+
+-- Users table (for end-users, IT staff, supervisors)
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) UNIQUE NOT NULL,
+    Password NVARCHAR(100) NOT NULL, -- In production, use hashed passwords
+    Role NVARCHAR(20) NOT NULL, -- EndUser, ITStaff, Supervisor, Manager
+    CampusID INT NOT NULL,
+    Email NVARCHAR(100),
+    FOREIGN KEY (CampusID) REFERENCES Campuses(CampusID)
+);
+
+-- Support Tickets table
+CREATE TABLE SupportTickets (
+    TicketID INT PRIMARY KEY IDENTITY(1,1),
+    Title NVARCHAR(200) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL, -- Normal, Urgent, MissionCritical
+    Status NVARCHAR(20) NOT NULL, -- Open, InProgress, Resolved, Closed
+    CampusID INT NOT NULL,
+    CreatedBy INT NOT NULL, -- UserID of the end-user who created the ticket
+    CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+    AssignedTo INT NULL, -- UserID of IT staff
+    AssignedAt DATETIME NULL,
+    ClosedAt DATETIME NULL,
+    FOREIGN KEY (CampusID) REFERENCES Campuses(CampusID),
+    FOREIGN KEY (CreatedBy) REFERENCES Users(UserID),
+    FOREIGN KEY (AssignedTo) REFERENCES Users(UserID)
+);
+
+-- Ticket Actions/History table (for tracking fixes, escalations, and comments)
+CREATE TABLE TicketActions (
+    ActionID INT PRIMARY KEY IDENTITY(1,1),
+    TicketID INT NOT NULL,
+    UserID INT NOT NULL,
+    ActionType NVARCHAR(50) NOT NULL, -- Comment, Fix, Escalation, AdditionalSupport
+    ActionDescription NVARCHAR(MAX) NOT NULL,
+    ActionTime DATETIME NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY (TicketID) REFERENCES SupportTickets(TicketID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- FAQ/Knowledge Base table
+CREATE TABLE KnowledgeBase (
+    KBID INT PRIMARY KEY IDENTITY(1,1),
+    Title NVARCHAR(200) NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    CreatedBy INT NOT NULL,
+    CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+    CampusID INT NOT NULL,
+    FOREIGN KEY (CreatedBy) REFERENCES Users(UserID),
+    FOREIGN KEY (CampusID) REFERENCES Campuses(CampusID)
+);
