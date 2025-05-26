@@ -1,6 +1,8 @@
 # IT Support Ticketing System
 
 This is a simple IT Support Ticketing System built with Python, Flask, and MS SQL Server. It supports multiple campuses, ticket assignment, tracking, escalation, and a searchable knowledge base. The system is mobile-responsive and runs on localhost.
+#  Video for instructions:
+https://youtu.be/M5rmfejwS4k
 
 ## Requirements
 - Python 3.8+
