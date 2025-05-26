@@ -4,7 +4,7 @@ This is a simple IT Support Ticketing System built with Python, Flask, and MS SQ
 
 ## Requirements
 - Python 3.8+
-- Microsoft SQL Server (running on VNCORPVNWKS1061)
+- Microsoft SQL Server (running on local computer)
 - SQL Server Management Studio (SSMS)
 - Windows OS
 
@@ -12,12 +12,12 @@ This is a simple IT Support Ticketing System built with Python, Flask, and MS SQ
 
 1. **Create the Database**
    - Open SQL Server Management Studio (SSMS).
-   - Connect to the SQL Server instance `VNCORPVNWKS1061` using username `sa` and password `1234567`.
+   - Connect to the SQL Server instance `local` using username for example `sa` and password `1234567`
    - Open the file `create_database.sql` from the project folder.
    - Execute the script to create the `ITSupportDB` database and tables.
 
 2. **Set Up the Project Folder**
-   - Create a folder at `C:\Vo Chau\PythonProjects\ITTicket`.
+   - Create a folder at `C:\PythonProjects\ITTicket`.
    - Copy all project files into this folder, maintaining the structure:
      ```
      ITTicket/
@@ -40,7 +40,7 @@ This is a simple IT Support Ticketing System built with Python, Flask, and MS SQ
      ```
 
 3. **Install Python Dependencies**
-   - Open a command prompt and navigate to `C:\Vo Chau\PythonProjects\ITTicket`.
+   - Open a command prompt and navigate to `C:\PythonProjects\ITTicket`.
    - Run the following command to create a virtual environment:
      ```
      python -m venv venv
